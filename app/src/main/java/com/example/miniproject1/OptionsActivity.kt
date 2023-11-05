@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,10 +49,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import com.example.miniproject1.ui.theme.MiniProject1Theme
 
 class OptionsActivity : ComponentActivity() {
+    private val viewModel: ViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             MiniProject1Theme {
@@ -59,7 +64,7 @@ class OptionsActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    OptionsPanel()
+                    OptionsPanel(vm = viewModel )
                 }
             }
         }
@@ -68,14 +73,11 @@ class OptionsActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OptionsPanel() {
+fun OptionsPanel(vm: ViewModel) {
     val context = LocalContext.current
-    var isDark by remember {
-        mutableStateOf(false)
-    }
-    var isDynamic by remember {
-        mutableStateOf(false)
-    }
+
+    val isDark by vm.isDarkTheme.collectAsState(initial = false)
+    val isDynamic by vm.isDynamicColor.collectAsState(initial = true)
     Scaffold(
         topBar =
         {
@@ -134,7 +136,9 @@ fun OptionsPanel() {
                     Spacer(modifier = Modifier.width(30.dp))
                     Switch(
                         checked = isDark,
-                        onCheckedChange = { isDark = it },
+                        onCheckedChange = { newValue ->
+                            vm.saveOptionsPreferences(vm.DARK_THEME_KEY, newValue)
+                        },
                         modifier = Modifier.size(48.dp)
                     )
                 }
@@ -156,10 +160,12 @@ fun OptionsPanel() {
                         fontSize = 20.sp,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    Spacer(modifier = Modifier.width(30.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     Switch(
                         checked = isDynamic,
-                        onCheckedChange = { isDynamic = it },
+                        onCheckedChange = { newValue ->
+                            vm.saveOptionsPreferences(vm.DYNAMIC_COLOR_KEY, newValue)
+                        },
                         modifier = Modifier.size(48.dp)
                     )
                 }
