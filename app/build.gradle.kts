@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -9,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.miniproject1"
-        minSdk = 27
-        targetSdk = 33
+        minSdk = 29
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -30,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -49,8 +51,16 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 dependencies {
 
+
+    implementation("androidx.preference:preference:1.2.0")
+    ksp("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-ktx:2.6.0")
     implementation("androidx.room:room-ktx:2.6.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.core:core-ktx:1.9.0")

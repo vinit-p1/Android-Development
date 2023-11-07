@@ -76,29 +76,11 @@ fun ScaffoldExample() {
 
                     }
                 },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.Settings, "options")
 
-                    }
-                },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ))
-        },
-        bottomBar = {
-            BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = "Bottom app bar",
-                )
-            }
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { presses }) {
