@@ -44,6 +44,7 @@ class ProductListActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MiniProject1Theme {
+                val dbViewModel = ProductDBViewModel(application)
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
