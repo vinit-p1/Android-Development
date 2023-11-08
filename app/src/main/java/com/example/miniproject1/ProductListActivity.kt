@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -66,10 +67,12 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlin.coroutines.coroutineContext
 
 class ProductListActivity : ComponentActivity() {
+    val viewModel: ViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MiniProject1Theme {
+            MiniProject1Theme (vm = viewModel){
                 val dbViewModel = ProductDBViewModel(application)
                 // A surface container using the 'background' color from the theme
                 Surface(

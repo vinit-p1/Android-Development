@@ -58,7 +58,7 @@ class OptionsActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-            MiniProject1Theme {
+            MiniProject1Theme (vm = viewModel){
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),

@@ -33,12 +33,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.miniproject1.ui.theme.MiniProject1Theme
 import java.lang.StackWalker.Option
+import androidx.activity.viewModels
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: ViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MiniProject1Theme {
+            MiniProject1Theme (vm = viewModel){
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),

@@ -23,6 +23,7 @@ class ViewModel(private val app: Application) : AndroidViewModel(app) {
 //    val userFlow: Flow<String> = app.dataStore.data.map {
 //        it[userKey] ?: ""
 //    }
+
     val isDarkTheme: Flow<Boolean> = app.dataStore.data
         .map { it[DARK_THEME_KEY] ?: false
         }
@@ -43,4 +44,8 @@ class ViewModel(private val app: Application) : AndroidViewModel(app) {
 //        val preferences = app.dataStore.data.first()
 //        return preferences[key] ?: false
 //    }
+//fun getPref(key: Preferences.Key<Boolean>): Flow<Boolean> = app.dataStore.data.map {
+//        preferences: Preferences ->
+//    return@map preferences[key] ?: false
+//}
 }
