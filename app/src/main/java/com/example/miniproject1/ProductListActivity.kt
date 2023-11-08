@@ -126,16 +126,20 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
 
                     }
                 },
+                actions = {
+                    IconButton(onClick = {
+                        val optionsActivityIntent = Intent(context, OptionsActivity::class.java)
+                        context.startActivity(optionsActivityIntent)
+                    }) {
+                        Icon(Icons.Default.Settings, contentDescription = "Options")
+                    }
+
+                },
 
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ))
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {  }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
         }
     ) { innerPadding ->
         Column(
