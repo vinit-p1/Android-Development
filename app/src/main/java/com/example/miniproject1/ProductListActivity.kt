@@ -107,9 +107,6 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
     var quantity by remember {
         mutableStateOf(0)
     }
-    var isPurchased by remember {
-        mutableStateOf(false)
-    }
     var checkedState by remember {
         mutableStateOf(false)
     }
@@ -238,7 +235,6 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                         // Product Name
                         BasicTextField(
                             modifier = Modifier
-                                .background(color = Color.Transparent)
                                 .padding(4.dp, 6.dp)
                                 .weight(1f)
                                 .width(IntrinsicSize.Min),
@@ -246,7 +242,9 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                             onValueChange = {changedName ->
                                 val productCopy = product.copy(name = changedName)
                                 dbvm.updateProduct(productCopy) },
-                            textStyle = TextStyle(fontSize = 25.sp),
+                            textStyle = TextStyle(
+                                fontSize = 25.sp,
+                                color = MaterialTheme.colorScheme.onSurface ),
                             singleLine = true
                         )
                         
@@ -267,7 +265,9 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                                 val productCopy = product.copy(quantity = newQtyInt)
                                 dbvm.updateProduct(productCopy)
                             },
-                            textStyle = TextStyle(fontSize = 25.sp ),
+                            textStyle = TextStyle(
+                                fontSize = 25.sp,
+                                color = MaterialTheme.colorScheme.onSurface ),
                             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
 
                         )
@@ -287,7 +287,9 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                                 val productCopy = product.copy(price = newPriceDouble)
                                 dbvm.updateProduct(productCopy)
                             },
-                            textStyle = TextStyle(fontSize = 25.sp ),
+                            textStyle = TextStyle(
+                                fontSize = 25.sp,
+                                color = MaterialTheme.colorScheme.onSurface ),
                             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
 
                         )
