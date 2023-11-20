@@ -175,7 +175,7 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                     value = productPrice,
                     onValueChange = {
                         productPrice = it
-                        price = productPrice.toFloat()
+                        price = productPrice.toFloatOrNull() ?: 0.0f
                     },
                     modifier = Modifier
                         .padding(5.dp, 10.dp)
@@ -189,7 +189,7 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                     value = productQty,
                     onValueChange = {
                         productQty = it
-                        quantity = productQty.toInt()
+                        quantity = productQty.toIntOrNull() ?: 0
                     },
                     modifier = Modifier
                         .padding(5.dp, 10.dp)
