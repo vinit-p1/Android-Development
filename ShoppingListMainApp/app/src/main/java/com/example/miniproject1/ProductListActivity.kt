@@ -1,5 +1,6 @@
 package com.example.miniproject1
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -203,7 +204,23 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
 
 
             Button(
-                onClick = { dbvm.insertProduct(Product(name = productName, price = price.toDouble(), quantity = quantity, isPurchased = checkedState))
+                onClick = {
+                    dbvm.insertProduct(Product(
+                    name = productName,
+                    price = price.toDouble(),
+                    quantity = quantity,
+                    isPurchased = checkedState))
+
+                    context.sendBroadcast(
+                        Intent().also {
+                            it.component = ComponentName(
+                                "com.example.broadcastreceiverapp",
+                                "com.example.broadcastreceiverapp.NewProductReceiver")
+                            it.action = "com.example.NewProduct"
+                            it.putExtra("Name", productName)
+                            it.putExtra("Qty", quantity)
+                        }
+                    )
                },
                 modifier = Modifier
                     .requiredHeight(50.dp)
