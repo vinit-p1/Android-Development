@@ -23,8 +23,8 @@ class ProductRepository(private val firebaseDatabase: FirebaseDatabase) {
                     name = snapshot.child("name").value as String,
                     price = (snapshot.child("price").value as? Long)?.toDouble() ?: 0.0,
                     quantity = (snapshot.child("quantity").value as? Long)?.toInt() ?: 0,
-                    isPurchased = snapshot.child("isPurchased").value as Boolean,
-                    )
+                    isPurchased = snapshot.child("isPurchased").value as? Boolean ?: false
+                )
                 allProduct.value = allProduct.value.toMutableMap().apply {
                     put(product.id, product)
                 } as HashMap<String, Product>
@@ -36,9 +36,8 @@ class ProductRepository(private val firebaseDatabase: FirebaseDatabase) {
                     name = snapshot.child("name").value as String,
                     price = (snapshot.child("price").value as? Long)?.toDouble() ?: 0.0,
                     quantity = (snapshot.child("quantity").value as? Long)?.toInt() ?: 0,
-                    isPurchased = snapshot.child("isPurchased").value as Boolean,
-
-                    )
+                    isPurchased = snapshot.child("isPurchased").value as? Boolean ?: false
+                )
                 allProduct.value = allProduct.value.toMutableMap().apply {
                     put(product.id, product)
                 } as HashMap<String, Product>
@@ -50,9 +49,8 @@ class ProductRepository(private val firebaseDatabase: FirebaseDatabase) {
                     name = snapshot.child("name").value as String,
                     price = (snapshot.child("price").value as? Long)?.toDouble() ?: 0.0,
                     quantity = (snapshot.child("quantity").value as? Long)?.toInt() ?: 0,
-                    isPurchased = snapshot.child("isPurchased").value as Boolean,
-
-                    )
+                    isPurchased = snapshot.child("isPurchased").value as? Boolean ?: false
+                )
                 allProduct.value = allProduct.value.toMutableMap().apply {
                     remove(product.id)
                 } as HashMap<String, Product>            }
@@ -75,9 +73,9 @@ class ProductRepository(private val firebaseDatabase: FirebaseDatabase) {
     }
     suspend fun update(product: Product) {
         firebaseDatabase.getReference(products+"/${product.id}").child("name").setValue(product.name)
-        firebaseDatabase.getReference(products+"/${product.id}").child("price").setValue(product.name)
-        firebaseDatabase.getReference(products+"/${product.id}").child("quantity").setValue(product.name)
-        firebaseDatabase.getReference(products+"/${product.id}").child("isPurchased").setValue(product.name)
+        firebaseDatabase.getReference(products+"/${product.id}").child("price").setValue(product.price)
+        firebaseDatabase.getReference(products+"/${product.id}").child("quantity").setValue(product.quantity)
+        firebaseDatabase.getReference(products+"/${product.id}").child("isPurchased").setValue(product.isPurchased)
     }
     suspend fun delete(id: String) {
         firebaseDatabase.getReference(products+"/${id}").removeValue()

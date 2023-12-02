@@ -13,12 +13,12 @@ class ProductDBViewModel(private val app: Application) : AndroidViewModel(app){
 
     private val productRepository: ProductRepository
     private val firebaseDatabase: FirebaseDatabase
-    val product: StateFlow<HashMap<String, Product>>
+    val products: StateFlow<HashMap<String, Product>>
 
     init {
         firebaseDatabase = FirebaseDatabase.getInstance()
         productRepository = ProductRepository(firebaseDatabase)
-        product = productRepository.allProduct
+        products = productRepository.allProduct
     }
 
     fun insertProduct(product: Product){
