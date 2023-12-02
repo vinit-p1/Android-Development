@@ -4,17 +4,20 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.miniproject1.Model.Product
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProductDBViewModel(private val app: Application) : AndroidViewModel(app){
 
     private val productRepository: ProductRepository
-    val product: Flow<List<Product>>
+    private val firebaseDatabase: FirebaseDatabase
+    val product: StateFlow<HashMap<String, Product>>
 
     init {
-        val productDao = ProductDatabase.getDatabase(app).productDao()
-        productRepository = ProductRepository(productDao)
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        productRepository = ProductRepository(firebaseDatabase)
         product = productRepository.allProduct
     }
 
@@ -30,9 +33,9 @@ class ProductDBViewModel(private val app: Application) : AndroidViewModel(app){
         }
     }
 
-    fun deleteProduct(product: Product){
+    fun deleteProduct(id: String){
         viewModelScope.launch {
-            productRepository.delete(product)
+            productRepository.delete(id)
         }
     }
 }

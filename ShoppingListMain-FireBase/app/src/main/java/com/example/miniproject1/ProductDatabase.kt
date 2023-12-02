@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.miniproject1.Model.Product
 
-@Database(entities = [Product::class], version = 1)
+//@Database(entities = [Product::class], version = 1)
 abstract class ProductDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDAO

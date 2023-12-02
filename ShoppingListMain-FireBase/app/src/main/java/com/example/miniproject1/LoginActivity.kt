@@ -64,8 +64,8 @@ class LoginActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(auth: FirebaseAuth, modifier: Modifier = Modifier) {
-    var inputTextLogin by remember { mutableStateOf("") }
-    var inputTextPassword by remember { mutableStateOf("") }
+    var inputTextLogin by remember { mutableStateOf("example@gmail.com") }
+    var inputTextPassword by remember { mutableStateOf("123456") }
     val context = LocalContext.current
     var loginButtonEnabled by remember { mutableStateOf(false) }
     var registerButtonEnabled by remember { mutableStateOf(false) }

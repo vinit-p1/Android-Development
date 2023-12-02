@@ -91,7 +91,7 @@ class ProductListActivity : ComponentActivity() {
 @Composable
 fun ProductInterface(dbvm : ProductDBViewModel) {
 
-    val productsList by dbvm.product.collectAsState(emptyList())
+    val productsList by dbvm.product.collectAsState(emptyMap<String, Product>())
     val context = LocalContext.current
     var productName by remember {
         mutableStateOf("")
@@ -236,7 +236,7 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
             ){
-                items(productsList){product ->
+                items(productsList.toList()){product ->
                     Row (
                         modifier = Modifier
                             .fillMaxWidth()
@@ -246,9 +246,9 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                     ){
                         // Checkbox to see if its purchased
                         Checkbox(
-                            checked = product.isPurchased,
+                            checked = product.second.isPurchased,
                             onCheckedChange = {checked ->
-                                val productCopy = product.copy(isPurchased = checked)
+                                val productCopy = product.second.copy(isPurchased = checked)
                                 dbvm.updateProduct(productCopy)
                             }
                         )
@@ -259,9 +259,9 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                                 .padding(4.dp, 6.dp)
                                 .weight(1f)
                                 .width(IntrinsicSize.Min),
-                            value = product.name,
+                            value = product.second.name,
                             onValueChange = {changedName ->
-                                val productCopy = product.copy(name = changedName)
+                                val productCopy = product.second.copy(name = changedName)
                                 dbvm.updateProduct(productCopy) },
                             textStyle = TextStyle(
                                 fontSize = 25.sp,
@@ -280,10 +280,10 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                                 .weight(1f)
                                 .width(IntrinsicSize.Min)
                                 .size(5.dp, 35.dp),
-                            value = product.quantity.toString(),
+                            value = product.second.quantity.toString(),
                             onValueChange = { newQty ->
                                 val newQtyInt = newQty.toIntOrNull() ?: 1
-                                val productCopy = product.copy(quantity = newQtyInt)
+                                val productCopy = product.second.copy(quantity = newQtyInt)
                                 dbvm.updateProduct(productCopy)
                             },
                             textStyle = TextStyle(
@@ -302,10 +302,10 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                                 .weight(1f)
                                 .width(IntrinsicSize.Min)
                                 .size(5.dp, 35.dp),
-                            value = product.price.toString(),
+                            value = product.second.price.toString(),
                             onValueChange = { newPrice ->
                                 val newPriceDouble = newPrice.toDoubleOrNull() ?: 0.1
-                                val productCopy = product.copy(price = newPriceDouble)
+                                val productCopy = product.second.copy(price = newPriceDouble)
                                 dbvm.updateProduct(productCopy)
                             },
                             textStyle = TextStyle(
@@ -316,7 +316,7 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                         )
 
                         // Delete the Product
-                        IconButton(onClick = { dbvm.deleteProduct(product) }) {
+                        IconButton(onClick = { dbvm.deleteProduct(product.second.id) }) {
 
                             Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Product")
 
