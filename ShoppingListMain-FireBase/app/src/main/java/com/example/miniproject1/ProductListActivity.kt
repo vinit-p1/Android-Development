@@ -91,7 +91,7 @@ class ProductListActivity : ComponentActivity() {
 @Composable
 fun ProductInterface(dbvm : ProductDBViewModel) {
 
-    val productsList by dbvm.product.collectAsState(emptyMap<String, Product>())
+    val productsList by dbvm.products.collectAsState(emptyMap<String, Product>())
     val context = LocalContext.current
     var productName by remember {
         mutableStateOf("")
@@ -230,9 +230,9 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
             {
                 Text(text = "Add product")
             }
-            
+
             Spacer(modifier = Modifier.requiredHeight(10.dp))
-            
+
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
             ){
@@ -268,7 +268,7 @@ fun ProductInterface(dbvm : ProductDBViewModel) {
                                 color = MaterialTheme.colorScheme.onSurface ),
                             singleLine = true
                         )
-                        
+
                         Spacer(modifier = Modifier.requiredWidth(3.dp))
 
                         // Product Quantity
