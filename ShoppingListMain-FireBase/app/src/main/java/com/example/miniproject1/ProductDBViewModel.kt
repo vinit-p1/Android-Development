@@ -16,7 +16,7 @@ class ProductDBViewModel(private val app: Application) : AndroidViewModel(app){
     val products: StateFlow<HashMap<String, Product>>
 
     init {
-        firebaseDatabase = FirebaseDatabase.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance("https://shoppingmanager-d1943-default-rtdb.europe-west1.firebasedatabase.app/")
         productRepository = ProductRepository(firebaseDatabase)
         products = productRepository.allProduct
     }
