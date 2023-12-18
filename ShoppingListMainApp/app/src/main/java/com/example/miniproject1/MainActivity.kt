@@ -97,6 +97,17 @@ fun FrontPage() {
             }
             FilledTonalButton(
                 onClick = {
+                    val storeListActivityIntent = Intent(context, StoreList::class.java)
+                    context.startActivity(storeListActivityIntent)
+                },
+                modifier = Modifier
+                    .widthIn(250.dp)
+            ) {
+                Text(text = "Store List",
+                    fontSize = 20.sp)
+            }
+            FilledTonalButton(
+                onClick = {
                     val optionsActivityIntent = Intent(context, OptionsActivity::class.java)
                     context.startActivity(optionsActivityIntent)
                 },

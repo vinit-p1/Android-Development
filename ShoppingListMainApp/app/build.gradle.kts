@@ -59,6 +59,8 @@ dependencies {
 
 
     implementation("androidx.preference:preference:1.2.0")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     ksp("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.6.0")
     implementation("androidx.room:room-ktx:2.6.0")
