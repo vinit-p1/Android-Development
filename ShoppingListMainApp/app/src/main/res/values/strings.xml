@@ -2,4 +2,6 @@
     <string name="app_name">MiniProject1</string>
     <string name="title_activity_options">OptionsActivity</string>
     <string name="title_activity_store_list">StoreList</string>
+    <string name="title_activity_edit_store">EditStoreActivity</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoidmluZWV0cDEiLCJhIjoiY2xxYjN6Zjd3MjlnazJqcGE1bGdkeWR4NSJ9.lnt6OkMi7Jt-naXlf8sI9A</string>
 </resources>

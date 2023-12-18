@@ -57,6 +57,14 @@ kotlin {
 
 dependencies {
 
+    implementation("com.mapbox.extension:maps-compose:11.0.0")
+    implementation("dev.shreyaspatil.permission-flow:permission-flow-compose:1.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+
 
     implementation("androidx.preference:preference:1.2.0")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
