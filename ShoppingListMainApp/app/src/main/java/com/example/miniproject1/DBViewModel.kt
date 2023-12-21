@@ -11,19 +11,14 @@ import kotlinx.coroutines.launch
 class DBViewModel(private val app: Application) : AndroidViewModel(app){
 
     private val productRepository: ProductRepository
-    private val storeRepository: StoreRepository
 
     val product: Flow<List<Product>>
-    val store: Flow<List<Store>>
     init {
         val productDao = ProductDatabase.getDatabase(app).productDao()
-        val storeDAO = ProductDatabase.getDatabase(app).storeDao()
 
         productRepository = ProductRepository(productDao)
-        storeRepository = StoreRepository(storeDAO)
 
         product = productRepository.allProduct
-        store = storeRepository.allStores
     }
 
     fun insertProduct(product: Product){
@@ -41,26 +36,6 @@ class DBViewModel(private val app: Application) : AndroidViewModel(app){
     fun deleteProduct(product: Product){
         viewModelScope.launch {
             productRepository.delete(product)
-        }
-    }
-
-    fun insertStore(store: Store):Long {
-        var id:Long = -11
-        viewModelScope.launch {
-            id = storeRepository.insert(store)
-        }
-        return id
-    }
-
-    fun updateStore(store: Store) {
-        viewModelScope.launch {
-            storeRepository.update(store)
-        }
-    }
-
-    fun deleteStore(store: Store) {
-        viewModelScope.launch {
-            storeRepository.delete(store)
         }
     }
 }

@@ -12,6 +12,7 @@ data class Store (
     var id : Long = 0,
     val name: String = "",
     val description: String = "",
-    val location: String = "",
+    val lat : Double = 0.0,
+    val long : Double = 0.0,
     val radius: Double = 0.0
 )
