@@ -44,10 +44,12 @@ class DBViewModel(private val app: Application) : AndroidViewModel(app){
         }
     }
 
-    fun insertStore(store: Store) {
+    fun insertStore(store: Store):Long {
+        var id:Long = -11
         viewModelScope.launch {
-            storeRepository.insert(store)
+            id = storeRepository.insert(store)
         }
+        return id
     }
 
     fun updateStore(store: Store) {
