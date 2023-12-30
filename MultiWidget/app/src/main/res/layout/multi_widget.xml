@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MultiWidget.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:theme="@style/Theme.MultiWidget.AppWidgetContainer">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="418dp"
+        android:layout_height="116dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/note" />
+
+    <ImageButton
+        android:id="@+id/ytButton"
+        style="@android:style/Widget.Material.Light.ImageButton"
+        android:layout_width="65dp"
+        android:layout_height="63dp"
+        android:layout_below="@id/imageView"
+        android:layout_alignEnd="@id/imageView"
+        android:background="#E67373"
+        android:contentDescription="Search videos in Youtube"
+        android:src="@drawable/baseline_youtube_searched_for_24" />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        style="@android:style/Widget.Material.Light.ImageButton"
+        android:layout_width="55dp"
+        android:layout_height="63dp"
+        android:layout_below="@id/imageView"
+        android:layout_alignStart="@id/ytButton"
+        android:layout_marginLeft="-55dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="Down the image"
+        android:src="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        style="@android:style/Widget.Material.Light.ImageButton"
+        android:layout_width="54dp"
+        android:layout_height="63dp"
+        android:layout_below="@id/imageView"
+        android:layout_alignStart="@id/imageButton1"
+        android:layout_marginLeft="-54dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="Up the image"
+        android:src="@android:drawable/arrow_up_float" />
+
+</RelativeLayout>
