@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
@@ -15,10 +16,18 @@ import android.widget.RemoteViews
  * Implementation of App Widget functionality.
  */
 
-// Define the actions for the "Up" and "Down" buttons
-const val ACTION_UP = "com.example.multiwidget.ACTION_UP"
-const val ACTION_DOWN = "com.example.multiwidget.ACTION_DOWN"
 class MultiWidget : AppWidgetProvider() {
+
+    companion object {
+        private var mediaPlayer: MediaPlayer? = null
+        private var musicIndex = 0
+        private val allMusic = arrayOf(R.raw.sleepymusic, R.raw.cinematicfairytale)
+        private var isPlaying = false
+
+        private val allImages = arrayOf(R.drawable.kitten, R.drawable.morekittens, R.drawable.note )
+        private var imageIndex = 0
+    }
+
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -38,78 +47,117 @@ class MultiWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-
-    override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-
-        if (intent?.action == ACTION_UP) {
-            // Handle "Up" button click
-            updateImage(context, R.drawable.kitten)
-        } else if (intent?.action == ACTION_DOWN) {
-            // Handle "Down" button click
-            updateImage(context, R.drawable.morekittens)
-        } else {
-            Log.d("Widget", "Unknown action: ${intent?.action}")
-        }
+    private fun makePendingIntent(context: Context, action: String): PendingIntent {
+        val intent = Intent(context, MultiWidget::class.java)
+        intent.action = action
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
-    private fun updateImage(context: Context?, imageResource: Int) {
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(
-            ComponentName(context!!, MultiWidget::class.java)
+
+    private fun updateAppWidget(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int
+    ) {
+        // Creating remote view
+        val remoteViews = RemoteViews(context.packageName, R.layout.multi_widget)
+
+        val ytIntent = Intent(Intent.ACTION_VIEW)
+        ytIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        ytIntent.data = Uri.parse("https://youtube.com")
+
+        // Use FLAG_IMMUTABLE for PendingIntent associated with an Activity
+        val ytPendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            ytIntent,
+            PendingIntent.FLAG_IMMUTABLE
         )
 
-        for (appWidgetId in appWidgetIds) {
-            val remoteViews = RemoteViews(context?.packageName, R.layout.multi_widget)
-            remoteViews.setImageViewResource(R.id.imageView, imageResource)
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-        }
+        remoteViews.setOnClickPendingIntent(R.id.ytButton, ytPendingIntent)
+
+        // ImageView
+        // Setting the ImageView initial image
+        remoteViews.setImageViewResource(R.id.imageView, allImages[imageIndex])
+        remoteViews.setOnClickPendingIntent(R.id.imageButton2, makePendingIntent(context,"NEXT_IMAGE"))
+
+
+        remoteViews.setTextViewText(
+            R.id.playStatus,
+            (if (isPlaying) "Playing: " else "") + "Track $musicIndex"
+        )
+        remoteViews.setOnClickPendingIntent(R.id.playButton, makePendingIntent(context, "PLAY"))
+        remoteViews.setOnClickPendingIntent(R.id.stopButton, makePendingIntent(context, "STOP"))
+        remoteViews.setOnClickPendingIntent(R.id.nextButton, makePendingIntent(context, "NEXT"))
+
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+
     }
-}
-internal fun updateAppWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-    // Creating remote view
-    val remoteViews = RemoteViews(context.packageName, R.layout.multi_widget)
 
-    // Setting the ImageView initial image
-    remoteViews.setImageViewResource(R.id.imageView, R.drawable.note)
+    private fun triggerUpdate(context: Context) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds =
+            appWidgetManager.getAppWidgetIds(
+                ComponentName(
+                context,
+                MultiWidget::class.java)
+            )
+        onUpdate(context, appWidgetManager, appWidgetIds)
+    }
 
-    val ytIntent = Intent(Intent.ACTION_VIEW)
-    ytIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    ytIntent.data = Uri.parse("https://youtube.com")
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
 
-    // Use FLAG_IMMUTABLE for PendingIntent associated with an Activity
-    val ytPendingIntent = PendingIntent.getActivity(
-        context,
-        0,
-        ytIntent,
-        PendingIntent.FLAG_IMMUTABLE)
+        when (intent.action) {
+            "NEXT_IMAGE" -> {
+                imageIndex = 1 - imageIndex
+            }
 
-    remoteViews.setOnClickPendingIntent(R.id.ytButton, ytPendingIntent)
+            "PLAY" -> {
+                play(context);
+            }
 
-    // Create intents for the "Up" and "Down" buttons
-    val upIntent = Intent(context, MultiWidget::class.java)
-    upIntent.action = ACTION_UP
-    val upPendingIntent = PendingIntent.getBroadcast(
-        context,
-        0,
-        upIntent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
-    remoteViews.setOnClickPendingIntent(R.id.imageButton2, upPendingIntent)
+            "STOP" -> {
+                stop();
+            }
 
-    val downIntent = Intent(context, MultiWidget::class.java)
-    downIntent.action = ACTION_DOWN
-    val downPendingIntent = PendingIntent.getBroadcast(
-        context,
-        0,
-        downIntent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
-    remoteViews.setOnClickPendingIntent(R.id.imageButton1, downPendingIntent)
+            "NEXT" -> {
+                next(context);
+            }
+        }
 
-    appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+        triggerUpdate(context)
+    }
+
+    private fun next(context: Context) {
+        var wasPlaying = isPlaying
+        stop();
+        musicIndex = (musicIndex + 1) % allMusic.size
+        if (wasPlaying)
+            play(context);
+    }
+
+    private fun stop() {
+
+        if (isPlaying) {
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = null
+            isPlaying = false
+        }    }
+
+    private fun play(context: Context) {
+
+        mediaPlayer?.reset()
+        mediaPlayer = MediaPlayer.create(context, allMusic[musicIndex])
+        mediaPlayer?.setOnCompletionListener {
+            if (musicIndex == allMusic.size - 1)
+                isPlaying = false
+            next(context)
+            triggerUpdate(context)
+        }
+        isPlaying = true
+        mediaPlayer?.start()
+    }
+
 }
